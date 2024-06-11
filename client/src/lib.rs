@@ -636,7 +636,7 @@ impl<'a, C: Deref<Target = impl Signer> + Clone> RequestBuilder<'a, C> {
         Ok(tx)
     }
 
-    async fn signed_transaction_internal(&self) -> Result<Transaction, ClientError> {
+    pub async fn signed_transaction_internal(&self) -> Result<Transaction, ClientError> {
         let latest_hash =
             AsyncRpcClient::new_with_commitment(self.cluster.to_owned(), self.options)
                 .get_latest_blockhash()
@@ -646,7 +646,7 @@ impl<'a, C: Deref<Target = impl Signer> + Clone> RequestBuilder<'a, C> {
         Ok(tx)
     }
 
-    async fn send_internal(&self) -> Result<Signature, ClientError> {
+    pub async fn send_internal(&self) -> Result<Signature, ClientError> {
         let rpc_client = AsyncRpcClient::new_with_commitment(self.cluster.to_owned(), self.options);
         let latest_hash = rpc_client.get_latest_blockhash().await?;
         let tx = self.signed_transaction_with_blockhash(latest_hash)?;
